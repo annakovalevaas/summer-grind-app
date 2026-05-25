@@ -9,7 +9,24 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # --- НАСТРОЙКИ ---
 import os
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import os
 
+# --- ХАК ДЛЯ RENDER (чтобы он думал, что мы сайт) ---
+class DummyHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is alive!")
+
+def run_dummy_server():
+    port = int(os.environ.get("PORT", 8080))
+    server = HTTPServer(('0.0.0.0', port), DummyHandler)
+    server.serve_forever()
+
+threading.Thread(target=run_dummy_server, daemon=True).start()
+# --- КОНЕЦ ХАКА ---
 # Робот сам возьмет токен из скрытого сейфа Render
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
