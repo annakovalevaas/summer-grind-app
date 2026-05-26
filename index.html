@@ -15,7 +15,6 @@
             --text-muted: #a0a0a0;
             --blob-pink: rgba(255, 117, 140, 0.4);
             --blob-purple: rgba(179, 157, 219, 0.3);
-
             --lvl-0: rgba(255, 255, 255, 0.05);
             --lvl-1: #4a2545;
             --lvl-2: #8a3a6b;
@@ -25,92 +24,61 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; text-align: left; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            background-color: #050505; color: var(--text-main); padding: 16px; overflow-x: hidden; min-height: 100vh; position: relative;
-        }
+        body { background-color: #050505; color: var(--text-main); padding: 16px; overflow-x: hidden; min-height: 100vh; position: relative; }
 
-        body::before, body::after {
-            content: ''; position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; animation: float 10s infinite alternate ease-in-out; pointer-events: none;
-        }
+        body::before, body::after { content: ''; position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; animation: float 10s infinite alternate ease-in-out; pointer-events: none; }
         body::before { top: -10%; left: -20%; width: 70vw; height: 70vw; background: var(--blob-pink); }
         body::after { bottom: -10%; right: -20%; width: 60vw; height: 60vw; background: var(--blob-purple); animation-delay: -5s; }
 
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20px, 30px) scale(1.1); } }
 
-        /* --- ЗАГРУЗОЧНЫЙ ЭКРАН --- */
-        .loader {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: var(--bg-dark); display: flex; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s ease-out, visibility 0.5s;
-        }
-        .loader-title {
-            font-size: 32px; font-weight: 900; color: #ff7eb3; letter-spacing: 4px; text-transform: uppercase;
-            animation: pulse 1.5s infinite alternate;
-        }
-        @keyframes pulse {
-            from { opacity: 0.5; text-shadow: 0 0 10px rgba(255,126,179,0.5); }
-            to { opacity: 1; text-shadow: 0 0 30px rgba(255,126,179,1); }
-        }
+        .loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-dark); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease-out, visibility 0.5s; }
+        .loader-title { font-size: 32px; font-weight: 900; color: #ff7eb3; letter-spacing: 4px; text-transform: uppercase; animation: pulse 1.5s infinite alternate; }
+        @keyframes pulse { from { opacity: 0.5; text-shadow: 0 0 10px rgba(255,126,179,0.5); } to { opacity: 1; text-shadow: 0 0 30px rgba(255,126,179,1); } }
 
-        /* Шапка */
         .header { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px; }
         .header-title { font-size: 24px; font-weight: 800; letter-spacing: 2px; }
         .back-btn { display: none; font-size: 14px; color: #ff7eb3; cursor: pointer; font-weight: 800; text-transform: uppercase; }
 
-        /* Вкладки */
         .view { display: none; animation: fadeInSoft 0.3s ease-out; position: relative; z-index: 10; }
         .view.active { display: block; }
         @keyframes fadeInSoft { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Карточки меню */
-        .menu-card {
-            background: rgba(30, 20, 25, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255, 255, 255, 0.08); cursor: pointer; transition: transform 0.1s;
-        }
+        .menu-card { background: rgba(30, 20, 25, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255, 255, 255, 0.08); cursor: pointer; transition: transform 0.1s; }
         .menu-card:active { transform: scale(0.97); }
         .menu-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
         .menu-desc { font-size: 13px; color: var(--text-muted); }
 
         .subject-title { font-weight: 800; font-size: 16px; text-transform: uppercase; padding-bottom: 8px; margin-top: 24px; margin-bottom: 16px; letter-spacing: 1px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 
-        /* СЕТКА ЗАДАНИЙ */
         .task-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 20px; position: relative; z-index: 10; }
-        .task-box {
-            aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: 800; color: #ffffff; cursor: pointer; transition: background 0.2s, transform 0.1s; border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .task-box { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #ffffff; cursor: pointer; transition: background 0.2s, transform 0.1s; border: 1px solid rgba(255, 255, 255, 0.05); }
         .task-box:active { transform: scale(0.9); }
-        .lvl-0 { background-color: var(--lvl-0); }
-        .lvl-1 { background-color: var(--lvl-1); border: none; }
-        .lvl-2 { background-color: var(--lvl-2); border: none; }
-        .lvl-3 { background-color: var(--lvl-3); border: none; }
-        .lvl-4 { background-color: var(--lvl-4); color: #000; border: none; }
+        .lvl-0 { background-color: var(--lvl-0); } .lvl-1 { background-color: var(--lvl-1); border: none; } .lvl-2 { background-color: var(--lvl-2); border: none; } .lvl-3 { background-color: var(--lvl-3); border: none; } .lvl-4 { background-color: var(--lvl-4); color: #000; border: none; }
 
-        /* СПИСКИ АРГУМЕНТОВ */
         .list-item { background: rgba(255, 255, 255, 0.03); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 12px; }
-        .list-header { display: flex; align-items: flex-start; }
-        .list-header input[type="checkbox"] { margin-right: 12px; margin-top: 4px; width: 20px; height: 20px; accent-color: #ff7eb3; cursor: pointer; }
+        .list-header { display: flex; align-items: center; justify-content: space-between; }
+        .list-header input[type="checkbox"] { margin-right: 12px; width: 20px; height: 20px; accent-color: #ff7eb3; cursor: pointer; }
         .list-title { font-size: 15px; font-weight: 800; cursor: pointer; flex: 1; color: #ff7eb3; }
         .list-details { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: #e0e0e0; line-height: 1.5; }
         .details-tag { font-weight: 800; color: #ffffff; display: block; margin-top: 8px; margin-bottom: 4px; }
+        .delete-btn { background: transparent; border: none; color: #ff5252; cursor: pointer; font-size: 16px; padding: 0 8px; font-weight: 800; }
 
-        /* Графики */
         .chart-container { width: 100%; height: 200px; margin-bottom: 16px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); }
 
-        /* ИНПУТЫ И КНОПКИ */
-        .input-group { display: flex; gap: 8px; margin-bottom: 24px; margin-top: 8px; }
+        .input-group { display: flex; gap: 8px; margin-bottom: 12px; margin-top: 8px; }
         .input-field { flex: 1; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 12px; border-radius: 12px; font-size: 14px; }
         .input-field:focus { outline: none; border-color: #ff7eb3; }
 
         .btn { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); color: #000; border: none; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; text-align: center; margin-top: 16px; }
         .btn-add { padding: 0 20px; width: auto; margin-top: 0;}
         .btn-outline { background: transparent; border: 1px solid #ff7eb3; color: #ff7eb3; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; width: 100%; margin-bottom: 16px; text-transform: uppercase; text-align: center; }
+        .btn-delete-mock { background: transparent; border: 1px solid #ff5252; color: #ff5252; padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; margin-bottom: 24px; text-align: center; }
 
         textarea { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; padding: 16px; border-radius: 12px; height: 140px; font-size: 14px; resize: none; margin-top: 8px; margin-bottom: 16px; }
         textarea:focus { outline: none; border-color: #ff7eb3; }
         #archive-list { display: none; margin-top: 16px; }
 
-        /* ИНТЕРАКТИВНЫЕ КАРТОЧКИ */
         .flashcard-container { perspective: 1000px; width: 100%; height: 180px; margin-bottom: 16px; }
         .flashcard { width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; position: relative; }
         .flashcard.is-flipped { transform: rotateY(180deg); }
@@ -120,14 +88,12 @@
         .card-word { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
         .counter { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 16px; font-weight: 800; }
 
-        /* ИГРОВОЙ БЛОК */
         .game-window { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); text-align: center; margin-bottom: 20px; }
-        .game-word { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: #ff7eb3; text-align: center; }
+        .game-word { font-size: 20px; font-weight: 800; margin-bottom: 24px; color: #ff7eb3; text-align: center; line-height: 1.4; }
         .game-buttons { display: flex; flex-direction: column; gap: 10px; }
         .game-buttons .btn { margin-top: 0; text-transform: none; }
         .game-feedback { margin-top: 16px; font-weight: 800; font-size: 16px; text-align: center; min-height: 24px; }
 
-        /* Стили для Мэтчинга */
         .match-container { display: flex; gap: 12px; margin-bottom: 20px; }
         .match-col { display: flex; flex-direction: column; gap: 8px; flex: 1; }
         .match-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: 600; text-align: center; }
@@ -163,10 +129,6 @@
             <div class="menu-title">Мои Пробники</div>
             <div class="menu-desc">Графики прогресса баллов</div>
         </div>
-        <div class="menu-card" onclick="openView('view-games')">
-            <div class="menu-title">Мини-игры ЕГЭ</div>
-            <div class="menu-desc">Практика русского и математики</div>
-        </div>
         <div class="menu-card" onclick="openView('view-essay')">
             <div class="menu-title">Воскресное Эссе</div>
             <div class="menu-desc">Архив и отправка ИИ</div>
@@ -198,9 +160,7 @@
 
     <div id="view-english" class="view">
         <div class="subject-title">Flashcards</div>
-
         <div class="counter" id="card-counter">Word 1 of 5</div>
-
         <div class="flashcard-container" onclick="this.querySelector('.flashcard').classList.toggle('is-flipped')">
             <div class="flashcard" id="current-flashcard">
                 <div class="card-face card-front">
@@ -212,7 +172,6 @@
             </div>
         </div>
         <button class="btn-outline" id="btn-next-card" onclick="nextCard()">⏭ Next Word</button>
-
         <button class="btn" id="btn-start-practice" style="display: none; margin-bottom: 32px;" onclick="startEnglishPractice()">Start Practice ➔</button>
 
         <div class="subject-title">Today's Vocabulary</div>
@@ -221,25 +180,7 @@
 
     <div id="view-eng-practice" class="view">
         <div class="subject-title">Practice Area</div>
-        <div id="eng-game-ui" class="game-window" style="display: block;">
-            </div>
-    </div>
-
-    <div id="view-games" class="view">
-        <div class="subject-title">Русский Язык (ЕГЭ)</div>
-        <div id="game-stress-ui" class="game-window" style="display: none;">
-            <div class="game-word" id="stress-question">Звонит</div>
-            <div class="game-buttons" style="flex-direction: row;">
-                <button class="btn" id="btn-stress-1" onclick="checkStress(this.innerText)"></button>
-                <button class="btn" id="btn-stress-2" onclick="checkStress(this.innerText)"></button>
-            </div>
-            <div class="game-feedback" id="stress-feedback"></div>
-        </div>
-        <button class="btn-outline" style="margin-bottom: 8px;" onclick="startStressGame()">🎮 Ударения (Задание 4)</button>
-        <button class="btn-outline" style="margin-bottom: 24px;">🎮 Паронимы (Задание 5)</button>
-
-        <div class="subject-title">Математика (Профиль)</div>
-        <button class="btn-outline">🎮 Блиц: Первая часть (1-12)</button>
+        <div id="eng-game-ui" class="game-window" style="display: block;"></div>
     </div>
 
     <div id="view-mocks" class="view">
@@ -249,6 +190,7 @@
             <input type="number" id="input-mock-math" class="input-field" placeholder="Новый балл (0-100)">
             <button class="btn btn-add" onclick="addMock('math')">➕</button>
         </div>
+        <button class="btn-delete-mock" onclick="deleteLastMock('math')">🗑️ Удалить последний балл</button>
 
         <div class="subject-title">Русский язык</div>
         <div class="chart-container"><canvas id="chart-rus"></canvas></div>
@@ -256,6 +198,7 @@
             <input type="number" id="input-mock-rus" class="input-field" placeholder="Новый балл (0-100)">
             <button class="btn btn-add" onclick="addMock('rus')">➕</button>
         </div>
+        <button class="btn-delete-mock" onclick="deleteLastMock('rus')">🗑️ Удалить последний балл</button>
 
         <div class="subject-title">Информатика</div>
         <div class="chart-container"><canvas id="chart-info"></canvas></div>
@@ -263,12 +206,13 @@
             <input type="number" id="input-mock-info" class="input-field" placeholder="Новый балл (0-100)">
             <button class="btn btn-add" onclick="addMock('info')">➕</button>
         </div>
+        <button class="btn-delete-mock" onclick="deleteLastMock('info')">🗑️ Удалить последний балл</button>
     </div>
 
     <div id="view-essay" class="view">
         <div class="subject-title">Написать эссе</div>
-        <textarea placeholder="Write your weekly reflections here..."></textarea>
-        <button class="btn" style="width: 100%;">Проверить с AI и сохранить</button>
+        <textarea id="essayText" placeholder="Write your weekly reflections here..."></textarea>
+        <button class="btn" style="width: 100%;" onclick="sendEssayToBot()">Проверить с AI и сохранить</button>
 
         <div class="subject-title">Сохраненные тексты</div>
         <button class="btn-outline" onclick="toggleArchive()">📂 Открыть архив эссе</button>
@@ -279,13 +223,27 @@
     </div>
 
     <script>
-        // --- ЛОГИКА ЗАГРУЗОЧНОГО ЭКРАНА ---
+        // ИНИЦИАЛИЗАЦИЯ TG
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function sendEssayToBot() {
+            let text = document.getElementById("essayText").value;
+            if (text.trim().length > 10) {
+                let data = JSON.stringify({ action: "check_essay", text: text });
+                tg.sendData(data);
+                tg.close();
+            } else {
+                alert("Пожалуйста, введи текст эссе. Он слишком короткий!");
+            }
+        }
+
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 loader.style.opacity = '0';
                 setTimeout(() => loader.style.display = 'none', 500);
-            }, 2500); // 2.5 секунды
+            }, 2500);
         });
 
         Chart.defaults.color = '#a0a0a0'; Chart.defaults.font.family = "'Manrope', sans-serif";
@@ -304,23 +262,18 @@
             document.getElementById('backBtn').style.display = 'none';
         }
 
-        // 1. СЕТКА ЗАДАНИЙ (Умная память)
+        // ТРЕКИНГ СЕТКИ
         function createGrid(containerId, count, prefix) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             for(let i=1; i<=count; i++) {
                 let box = document.createElement('div');
                 let boxId = `task-${prefix}-${i}`;
-                box.id = boxId;
-                box.innerText = i;
-
-                let savedLevel = parseInt(localStorage.getItem(boxId));
-                if (isNaN(savedLevel)) savedLevel = 0;
+                box.id = boxId; box.innerText = i;
+                let savedLevel = parseInt(localStorage.getItem(boxId)) || 0;
                 box.className = `task-box lvl-${savedLevel}`;
-
                 box.onclick = function() {
-                    let currentLvl = parseInt(localStorage.getItem(this.id));
-                    if (isNaN(currentLvl)) currentLvl = 0;
+                    let currentLvl = parseInt(localStorage.getItem(this.id)) || 0;
                     let nextLvl = (currentLvl + 1) % 5;
                     this.className = `task-box lvl-${nextLvl}`;
                     localStorage.setItem(this.id, nextLvl);
@@ -332,7 +285,7 @@
         createGrid('grid-rus', 27, 'rus');
         createGrid('grid-info', 27, 'info');
 
-        // 2. БАЗА ЛИТЕРАТУРЫ
+        // БАЗА ЛИТЕРАТУРЫ (С УДАЛЕНИЕМ)
         let defaultLitDataV2 = [
             { id: 1, title: "А.С. Пушкин «Капитанская дочка»", summary: "История взросления Петра Гринева во время бунта Пугачева. Гринев сохраняет честь перед лицом смерти, а Пугачев милует его за подаренный тулуп.", themes: "Честь, долг, милосердие, взросление, предательство (Швабрин).", done: true },
             { id: 2, title: "А.П. Чехов «Ионыч»", summary: "Молодой врач Дмитрий Старцев приезжает в провинцию. Со временем рутина и жажда денег уничтожают в нем человека, превращая в толстого, жадного Ионыча.", themes: "Деградация личности, влияние среды, мещанство.", done: false },
@@ -353,8 +306,11 @@
 
                 div.innerHTML = `
                     <div class="list-header">
-                        <input type="checkbox" id="lit-${item.id}" ${checkedAttr} onchange="toggleLit(${item.id})">
-                        <div class="list-title" onclick="toggleLitDesc(${item.id})">${item.title} <span>▼</span></div>
+                        <div style="display: flex; align-items: center; flex: 1;">
+                            <input type="checkbox" id="lit-${item.id}" ${checkedAttr} onchange="toggleLit(${item.id})">
+                            <div class="list-title" onclick="toggleLitDesc(${item.id})">${item.title} <span>▼</span></div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteLit(${item.id})">✕</button>
                     </div>
                     <div class="list-details" id="lit-desc-${item.id}">
                         <div>${item.summary || "Описание не добавлено."}</div>
@@ -362,208 +318,81 @@
                         <div>${item.themes || "Нет тем"}</div>
                     </div>
                 `;
-
                 if (item.done) readContainer.appendChild(div);
                 else unreadContainer.appendChild(div);
             });
         }
 
-        function toggleLitDesc(id) {
-            let el = document.getElementById(`lit-desc-${id}`);
-            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        function deleteLit(id) {
+            litData = litData.filter(item => item.id !== id);
+            localStorage.setItem('litDataV2', JSON.stringify(litData));
+            renderLit();
         }
 
-        function toggleLit(id) {
-            let item = litData.find(i => i.id === id);
-            if(item) {
-                item.done = !item.done;
-                localStorage.setItem('litDataV2', JSON.stringify(litData));
-                renderLit();
-            }
-        }
-
-        function addLit() {
-            let input = document.getElementById('input-lit');
-            if(input.value.trim() !== '') {
-                litData.push({ id: Date.now(), title: input.value.trim(), summary: "Саммари в разработке...", themes: "Тематика неизвестна", done: false });
-                localStorage.setItem('litDataV2', JSON.stringify(litData));
-                input.value = '';
-                renderLit();
-            }
-        }
+        function toggleLitDesc(id) { let el = document.getElementById(`lit-desc-${id}`); el.style.display = el.style.display === 'block' ? 'none' : 'block'; }
+        function toggleLit(id) { let item = litData.find(i => i.id === id); if(item) { item.done = !item.done; localStorage.setItem('litDataV2', JSON.stringify(litData)); renderLit(); } }
+        function addLit() { let input = document.getElementById('input-lit'); if(input.value.trim() !== '') { litData.push({ id: Date.now(), title: input.value.trim(), summary: "Саммари в разработке...", themes: "Тематика неизвестна", done: false }); localStorage.setItem('litDataV2', JSON.stringify(litData)); input.value = ''; renderLit(); } }
         renderLit();
 
-        // 3. АНГЛИЙСКИЙ (КАРТОЧКИ)
+        // АНГЛИЙСКИЙ (КАРТОЧКИ)
         const flashcards = [
-            { en: 'Crucial', ru: 'Ключевой, решающий' },
-            { en: 'Ghosting', ru: 'Игнорирование' },
-            { en: 'Versatile', ru: 'Разносторонний' },
-            { en: 'Crave', ru: 'Страстно желать' },
-            { en: 'Binge-watch', ru: 'Смотреть запоем' }
+            { en: 'Crucial', ru: 'Ключевой, решающий' }, { en: 'Ghosting', ru: 'Игнорирование' },
+            { en: 'Versatile', ru: 'Разносторонний' }, { en: 'Crave', ru: 'Страстно желать' }, { en: 'Binge-watch', ru: 'Смотреть запоем' }
         ];
 
         const vocabList = document.getElementById('vocab-list');
-        flashcards.forEach((word, idx) => {
-            vocabList.innerHTML += `<div class="list-item" style="padding: 12px; color: #fff;"><b>${idx+1}. ${word.en}</b> — ${word.ru}</div>`;
-        });
+        flashcards.forEach((word, idx) => { vocabList.innerHTML += `<div class="list-item" style="padding: 12px; color: #fff;"><b>${idx+1}. ${word.en}</b> — ${word.ru}</div>`; });
 
-        let currentCardIndex = 0;
-        let cardsViewed = 1;
-
+        let currentCardIndex = 0; let cardsViewed = 1;
         function nextCard() {
             const cardElement = document.getElementById('current-flashcard');
             cardElement.classList.remove('is-flipped');
-
             setTimeout(() => {
                 currentCardIndex = (currentCardIndex + 1) % flashcards.length;
                 document.getElementById('fc-front').innerText = flashcards[currentCardIndex].en;
                 document.getElementById('fc-back').innerText = flashcards[currentCardIndex].ru;
-
-                cardsViewed++;
-                document.getElementById('card-counter').innerText = `Word ${Math.min(cardsViewed, 5)} of 5`;
-
-                if(cardsViewed >= 5) {
-                    document.getElementById('btn-next-card').style.display = 'none';
-                    document.getElementById('btn-start-practice').style.display = 'block';
-                }
+                cardsViewed++; document.getElementById('card-counter').innerText = `Word ${Math.min(cardsViewed, 5)} of 5`;
+                if(cardsViewed >= 5) { document.getElementById('btn-next-card').style.display = 'none'; document.getElementById('btn-start-practice').style.display = 'block'; }
             }, 300);
         }
 
-        // 4. ПОЛНОЦЕННЫЙ ТРЕНАЖЕР АНГЛИЙСКОГО (MCQ -> Typing -> Matching)
-        let practiceStage = 0;
-        let practiceIndex = 0;
-        let matchedPairs = 0;
-        let selectedEng = null;
-        let selectedRu = null;
-
-        function startEnglishPractice() {
-            openView('view-eng-practice');
-            practiceStage = 0;
-            practiceIndex = 0;
-            loadPracticeStage();
-        }
+        // АНГЛИЙСКИЙ (ПРАКТИКА)
+        let practiceStage = 0; let practiceIndex = 0; let matchedPairs = 0; let selectedEng = null; let selectedRu = null;
+        function startEnglishPractice() { openView('view-eng-practice'); practiceStage = 0; practiceIndex = 0; loadPracticeStage(); }
 
         function loadPracticeStage() {
             const ui = document.getElementById('eng-game-ui');
-
-            // STAGE 0: Multiple Choice
             if (practiceStage === 0) {
-                if (practiceIndex >= flashcards.length) {
-                    practiceStage = 1; practiceIndex = 0; loadPracticeStage(); return;
-                }
-                let wordObj = flashcards[practiceIndex];
-                let options = [wordObj.ru];
-                while(options.length < 3) {
-                    let randomWord = flashcards[Math.floor(Math.random() * flashcards.length)].ru;
-                    if(!options.includes(randomWord)) options.push(randomWord);
-                }
+                if (practiceIndex >= flashcards.length) { practiceStage = 1; practiceIndex = 0; loadPracticeStage(); return; }
+                let wordObj = flashcards[practiceIndex]; let options = [wordObj.ru];
+                while(options.length < 3) { let randomWord = flashcards[Math.floor(Math.random() * flashcards.length)].ru; if(!options.includes(randomWord)) options.push(randomWord); }
                 options.sort(() => Math.random() - 0.5);
-
-                ui.innerHTML = `
-                    <p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 1: Choose the translation</p>
-                    <div class="game-word">${wordObj.en}</div>
-                    <div class="game-buttons">
-                        <button class="btn" onclick="checkMCQ('${options[0]}')">${options[0]}</button>
-                        <button class="btn" onclick="checkMCQ('${options[1]}')">${options[1]}</button>
-                        <button class="btn" onclick="checkMCQ('${options[2]}')">${options[2]}</button>
-                    </div>
-                    <div class="game-feedback" id="eng-feedback"></div>
-                `;
+                ui.innerHTML = `<p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 1: Choose translation</p><div class="game-word">${wordObj.en}</div><div class="game-buttons"><button class="btn" onclick="checkMCQ('${options[0]}')">${options[0]}</button><button class="btn" onclick="checkMCQ('${options[1]}')">${options[1]}</button><button class="btn" onclick="checkMCQ('${options[2]}')">${options[2]}</button></div><div class="game-feedback" id="eng-feedback"></div>`;
             }
-            // STAGE 1: Spelling / Typing
             else if (practiceStage === 1) {
-                if (practiceIndex >= flashcards.length) {
-                    practiceStage = 2; matchedPairs = 0; loadPracticeStage(); return;
-                }
+                if (practiceIndex >= flashcards.length) { practiceStage = 2; matchedPairs = 0; loadPracticeStage(); return; }
                 let wordObj = flashcards[practiceIndex];
-                ui.innerHTML = `
-                    <p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 2: Type in English</p>
-                    <div class="game-word" style="color: #fff;">${wordObj.ru}</div>
-                    <input type="text" id="eng-type-input" class="input-field" placeholder="Enter word..." style="text-align: center; font-size: 18px; margin-bottom: 16px;">
-                    <button class="btn" onclick="checkTyping()">Check Answer</button>
-                    <div class="game-feedback" id="eng-feedback"></div>
-                `;
+                ui.innerHTML = `<p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 2: Type in English</p><div class="game-word" style="color: #fff;">${wordObj.ru}</div><input type="text" id="eng-type-input" class="input-field" placeholder="Enter word..." style="text-align: center; font-size: 18px; margin-bottom: 16px;"><button class="btn" onclick="checkTyping()">Check</button><div class="game-feedback" id="eng-feedback"></div>`;
             }
-            // STAGE 3: Matching
             else if (practiceStage === 2) {
-                let engWords = [...flashcards].sort(() => Math.random() - 0.5);
-                let ruWords = [...flashcards].sort(() => Math.random() - 0.5);
-
-                let html = `<p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 3: Match the pairs</p><div class="match-container">`;
-                html += `<div class="match-col">` + engWords.map(w => `<div class="match-btn" onclick="selectMatch('eng', '${w.en}', this)">${w.en}</div>`).join('') + `</div>`;
-                html += `<div class="match-col">` + ruWords.map(w => `<div class="match-btn" onclick="selectMatch('ru', '${w.ru}', this)">${w.ru}</div>`).join('') + `</div>`;
-                html += `</div><div class="game-feedback" id="eng-feedback"></div>`;
+                let engWords = [...flashcards].sort(() => Math.random() - 0.5); let ruWords = [...flashcards].sort(() => Math.random() - 0.5);
+                let html = `<p style="color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">Stage 3: Match pairs</p><div class="match-container"><div class="match-col">` + engWords.map(w => `<div class="match-btn" onclick="selectMatch('eng', '${w.en}', this)">${w.en}</div>`).join('') + `</div><div class="match-col">` + ruWords.map(w => `<div class="match-btn" onclick="selectMatch('ru', '${w.ru}', this)">${w.ru}</div>`).join('') + `</div></div><div class="game-feedback" id="eng-feedback"></div>`;
                 ui.innerHTML = html;
             }
-            // FINISH
-            else if (practiceStage === 3) {
-                ui.innerHTML = `<div class="game-word" style="color:#69f0ae;">Flawless! 🎉</div><p>You have mastered today's vocabulary.</p><button class="btn" style="margin-top:20px;" onclick="goHome()">Back to Home</button>`;
-            }
+            else if (practiceStage === 3) { ui.innerHTML = `<div class="game-word" style="color:#69f0ae;">Flawless! 🎉</div><button class="btn" onclick="goHome()">Back to Home</button>`; }
         }
 
-        // Проверка Stage 1 (MCQ)
-        function checkMCQ(answer) {
-            let correct = flashcards[practiceIndex].ru;
-            let feedback = document.getElementById('eng-feedback');
-            if (answer.toLowerCase() === correct.toLowerCase()) {
-                feedback.innerText = "✅ Correct!"; feedback.style.color = "#69f0ae";
-                setTimeout(() => { practiceIndex++; loadPracticeStage(); }, 800);
-            } else {
-                feedback.innerText = "❌ Incorrect. Right answer: " + correct; feedback.style.color = "#ff5252";
-            }
-        }
+        function checkMCQ(ans) { let correct = flashcards[practiceIndex].ru; let fb = document.getElementById('eng-feedback'); if (ans.toLowerCase() === correct.toLowerCase()) { fb.innerText = "✅ Correct!"; fb.style.color = "#69f0ae"; setTimeout(() => { practiceIndex++; loadPracticeStage(); }, 800); } else { fb.innerText = "❌ Wrong! Correct: " + correct; fb.style.color = "#ff5252"; } }
+        function checkTyping() { let input = document.getElementById('eng-type-input').value.trim(); let correct = flashcards[practiceIndex].en; let fb = document.getElementById('eng-feedback'); if(input.toLowerCase() === correct.toLowerCase()) { fb.innerText = "✅ Correct!"; fb.style.color = "#69f0ae"; setTimeout(() => { practiceIndex++; loadPracticeStage(); }, 800); } else { fb.innerText = "❌ Wrong! Correct: " + correct; fb.style.color = "#ff5252"; } }
+        function selectMatch(col, text, el) { if(col === 'eng') { if(selectedEng) selectedEng.el.classList.remove('selected'); selectedEng = {text, el}; el.classList.add('selected'); } else { if(selectedRu) selectedRu.el.classList.remove('selected'); selectedRu = {text, el}; el.classList.add('selected'); } if(selectedEng && selectedRu) { let correct = flashcards.find(w => w.en === selectedEng.text && w.ru === selectedRu.text); let fb = document.getElementById('eng-feedback'); if(correct) { fb.innerText = "✅ Match!"; fb.style.color = "#69f0ae"; selectedEng.el.classList.add('hidden'); selectedRu.el.classList.add('hidden'); matchedPairs++; if(matchedPairs >= flashcards.length) { setTimeout(() => { practiceStage = 3; loadPracticeStage(); }, 1000); } } else { fb.innerText = "❌ Incorrect."; fb.style.color = "#ff5252"; selectedEng.el.classList.remove('selected'); selectedRu.el.classList.remove('selected'); } selectedEng = null; selectedRu = null; } }
 
-        // Проверка Stage 2 (Typing)
-        function checkTyping() {
-            let input = document.getElementById('eng-type-input').value.trim();
-            let correct = flashcards[practiceIndex].en;
-            let feedback = document.getElementById('eng-feedback');
-            if(input.toLowerCase() === correct.toLowerCase()) {
-                feedback.innerText = "✅ Correct!"; feedback.style.color = "#69f0ae";
-                setTimeout(() => { practiceIndex++; loadPracticeStage(); }, 800);
-            } else {
-                feedback.innerText = "❌ Incorrect. Right answer: " + correct; feedback.style.color = "#ff5252";
-            }
-        }
-
-        // Проверка Stage 3 (Matching)
-        function selectMatch(col, text, el) {
-            if(col === 'eng') {
-                if(selectedEng) selectedEng.el.classList.remove('selected');
-                selectedEng = {text, el}; el.classList.add('selected');
-            } else {
-                if(selectedRu) selectedRu.el.classList.remove('selected');
-                selectedRu = {text, el}; el.classList.add('selected');
-            }
-
-            if(selectedEng && selectedRu) {
-                let correct = flashcards.find(w => w.en === selectedEng.text && w.ru === selectedRu.text);
-                let feedback = document.getElementById('eng-feedback');
-                if(correct) {
-                    feedback.innerText = "✅ Match!"; feedback.style.color = "#69f0ae";
-                    selectedEng.el.classList.add('hidden'); selectedRu.el.classList.add('hidden');
-                    matchedPairs++;
-                    if(matchedPairs >= flashcards.length) {
-                        setTimeout(() => { practiceStage = 3; loadPracticeStage(); }, 1000);
-                    }
-                } else {
-                    feedback.innerText = "❌ Incorrect pair."; feedback.style.color = "#ff5252";
-                    selectedEng.el.classList.remove('selected'); selectedRu.el.classList.remove('selected');
-                }
-                selectedEng = null; selectedRu = null;
-            }
-        }
-
-        // 5. ПРОБНИКИ (ГРАФИКИ)
+        // ПРОБНИКИ И ГРАФИКИ (С УДАЛЕНИЕМ)
         function renderChart(subject) {
             let mocks = JSON.parse(localStorage.getItem(`mocks-${subject}`)) || [];
             let ctx = document.getElementById(`chart-${subject}`).getContext('2d');
             let labels = mocks.map((_, index) => `Пр. ${index + 1}`);
             if (charts[subject]) charts[subject].destroy();
-            charts[subject] = new Chart(ctx, {
-                type: 'line', data: { labels: labels, datasets: [{ label: 'Баллы', data: mocks, borderColor: '#ff7eb3', backgroundColor: 'rgba(255, 126, 179, 0.2)', borderWidth: 3, pointBackgroundColor: '#ffffff', pointRadius: 4, fill: true, tension: 0.3 }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
-            });
+            charts[subject] = new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Баллы', data: mocks, borderColor: '#ff7eb3', backgroundColor: 'rgba(255, 126, 179, 0.2)', borderWidth: 3, pointBackgroundColor: '#ffffff', pointRadius: 4, fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } } });
         }
 
         function addMock(subject) {
@@ -576,39 +405,18 @@
             }
         }
 
-        function toggleArchive() {
-            let archive = document.getElementById('archive-list');
-            archive.style.display = archive.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // 6. ИГРА НА УДАРЕНИЯ (ЕГЭ)
-        const stressData = [{ word: "звонит", options: ["звОнит", "звонИт"], correct: "звонИт" }, { word: "торты", options: ["тОрты", "тортЫ"], correct: "тОрты" }, { word: "каталог", options: ["катАлог", "каталОг"], correct: "каталОг" }];
-        let currentStressQuestion = 0;
-
-        function startStressGame() {
-            document.getElementById('game-stress-ui').style.display = 'block';
-            loadStressQuestion();
-        }
-        function loadStressQuestion() {
-            let q = stressData[currentStressQuestion];
-            document.getElementById('stress-question').innerText = q.word;
-            let btn1 = document.getElementById('btn-stress-1'); let btn2 = document.getElementById('btn-stress-2');
-            btn1.innerText = q.options[0]; btn2.innerText = q.options[1];
-            btn1.style.background = ""; btn2.style.background = ""; document.getElementById('stress-feedback').innerText = "";
-        }
-        function checkStress(selectedAnswer) {
-            let q = stressData[currentStressQuestion];
-            let feedback = document.getElementById('stress-feedback');
-            if (selectedAnswer === q.correct) {
-                feedback.innerText = "✅ Верно!"; feedback.style.color = "#69f0ae";
-                setTimeout(() => { currentStressQuestion = (currentStressQuestion + 1) % stressData.length; loadStressQuestion(); }, 1000);
+        function deleteLastMock(subject) {
+            let mocks = JSON.parse(localStorage.getItem(`mocks-${subject}`)) || [];
+            if (mocks.length > 0) {
+                mocks.pop(); // Стираем последний балл из массива
+                localStorage.setItem(`mocks-${subject}`, JSON.stringify(mocks));
+                renderChart(subject); // Перерисовываем обновленный график
             } else {
-                feedback.innerText = "❌ Ошибка. Правильно: " + q.correct; feedback.style.color = "#ff5252";
+                alert("График уже пуст!");
             }
         }
 
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+        function toggleArchive() { let archive = document.getElementById('archive-list'); archive.style.display = archive.style.display === 'block' ? 'none' : 'block'; }
     </script>
 </body>
 </html>

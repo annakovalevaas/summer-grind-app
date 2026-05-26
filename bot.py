@@ -8,7 +8,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import google.generativeai as genai
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
-from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import WebAppInfo, ReplyKeyboardMarkup, KeyboardButton
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
@@ -29,14 +29,14 @@ def run_dummy_server():
 threading.Thread(target=run_dummy_server, daemon=True).start()
 # --- КОНЕЦ ХАКА ---
 
-# Робот сам возьмет токен из скрытого сейфа Render
+# Считываем токены безопасности из скрытых настроек сервера
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# ВАЖНО: Укажи тут ссылку на свой сайт на GitHub Pages!
+# Ссылка на твой развернутый GitHub Pages сайт
 WEBAPP_URL = "https://annakovalevaas.github.io/summer-grind-app/"
 
-# Настройка Gemini
+# Настройка нейросети Gemini
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -44,68 +44,115 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Сюда будем сохранять ID пользователей для рассылки напоминаний
+# Хранилище ID пользователей для ежедневной рассылки
 USERS_TO_NOTIFY = set()
 
 
 # --- КОМАНДА /START ---
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    # Запоминаем пользователя, чтобы бот мог присылать ему рассылку
     USERS_TO_NOTIFY.add(message.from_user.id)
 
-    # Создаем кнопку под сообщением для открытия Летнего Дневника
-    markup = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="Открыть Летний Дневник ☀️", web_app=WebAppInfo(url=WEBAPP_URL))]
-        ]
+    # Создаем правильную REPLY клавиатуру внизу экрана телефона
+    markup = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="Открыть Летний Дневник ☀️", web_app=WebAppInfo(url=WEBAPP_URL))]
+        ],
+        resize_keyboard=True
     )
     await message.answer(
-        "Привет! Я твой бот для летней подготовки. Нажми на кнопку ниже, чтобы открыть приложение:",
+        "Привет! Я твой бот для летней подготовки.\n\n"
+        "✨ Доступные команды ИИ:\n"
+        "• /words — Сгенерировать новые 5 английских слов дня\n"
+        "• /lit [название] — Найти автора, саммари и темы для аргументов сочинения\n\n"
+        "Нажми на кнопку ниже, чтобы открыть приложение:",
         reply_markup=markup
     )
 
 
-# --- ФУНКЦИЯ ПРОВЕРКИ ЭССЕ ---
+# --- ИИ ПРОВЕРКА ЭССЕ ИЗ WEB APP ---
 @dp.message(lambda message: message.web_app_data)
 async def web_app_data_handler(message: types.Message):
     data = json.loads(message.web_app_data.data)
 
     if data.get('action') == 'check_essay':
         essay_text = data.get('text')
-        wait_msg = await message.answer("⏳ Анализирую эссе с помощью Gemini...")
+        wait_msg = await message.answer("⏳ Передаю текст нейросети Gemini. Анализирую эссе...")
 
         try:
-            prompt = f"Ты эксперт ЕГЭ по английскому. Проверь эссе, укажи на лексические, грамматические и стилистические ошибки, оцени по критериям ФИПИ и дай советы по улучшению. Текст эссе: {essay_text}"
+            prompt = (
+                f"Ты эксперт ЕГЭ по английскому языку. Тщательно проверь эссе, "
+                f"укажи на лексические, грамматические и стилистические ошибки, "
+                f"оцени по официальным критериям ФИПИ и дай развернутые советы по улучшению.\n"
+                f"Текст эссе:\n{essay_text}"
+            )
             response = model.generate_content(prompt)
             await wait_msg.edit_text(response.text)
         except Exception as e:
-            await wait_msg.edit_text(f"Ошибка при проверке: {e}")
+            await wait_msg.edit_text(f"Произошла ошибка ИИ: {e}")
 
 
-# --- НАПОМИНАНИЯ (SCHEDULER) ---
+# --- ИИ ГЕНЕРАТОР АРГУМЕНТОВ ЛИТЕРАТУРЫ (/lit) ---
+@dp.message(Command("lit"))
+async def cmd_lit(message: types.Message):
+    book_query = message.text.replace("/lit", "").strip()
+    if not book_query:
+        await message.answer("Пожалуйста, укажи книгу. Пример: /lit Капитанская дочка")
+        return
+
+    wait_msg = await message.answer("⏳ ИИ Gemini ищет автора, пишет краткое содержание и подбирает темы...")
+    try:
+        prompt = (
+            f"Ты эксперт ЕГЭ по литературе и русскому языку. Пользователь написал название книги: '{book_query}'. "
+            f"Определи автора и выведи информацию строго в три строчки (для вставки в таблицу аргументов):\n"
+            f"1. Правильное форматирование: И.О. Фамилия автора «Название произведения»\n"
+            f"2. Краткое саммари сюжета (буквально 2 емких предложения)\n"
+            f"3. Темы для аргументов (через запятую, например: Честь, Предательство, Долг)"
+        )
+        response = model.generate_content(prompt)
+        await wait_msg.edit_text(f"📖 Готовые данные для Летнего Дневника:\n\n{response.text}")
+    except Exception as e:
+        await wait_msg.edit_text(f"Не удалось получить ответ от ИИ: {e}")
+
+
+# --- ИИ ГЕНЕРАТОР АНГЛИЙСКИХ СЛОВ (/words) ---
+@dp.message(Command("words"))
+async def cmd_words(message: types.Message):
+    wait_msg = await message.answer("⏳ Нейросеть генерирует новую порцию продвинутой лексики...")
+    try:
+        prompt = (
+            "Сгенерируй 5 полезных английских слов уровня B2-C1 с переводом на русский для пополнения словарного запаса. "
+            "Выведи их списком, кратко и понятно."
+        )
+        response = model.generate_content(prompt)
+        await wait_msg.edit_text(f"🇬🇧 Новые слова дня от Gemini:\n\n{response.text}")
+    except Exception as e:
+        await wait_msg.edit_text(f"Ошибка генерации слов: {e}")
+
+
+# --- ЕЖЕДНЕВНЫЕ НАПОМИНАНИЯ (УВЕДОМЛЕНИЯ) ---
 async def send_daily_reminders():
     for user_id in USERS_TO_NOTIFY:
         try:
-            await bot.send_message(user_id,
-                                   "🔥 Пора ботать! Не забудь зайти в летний дневник и отметить прогресс по профильной математике и информатике!")
+            await bot.send_message(
+                user_id,
+                "🔥 Время ботать! Не забудь зайти в летний дневник, проверить эссе, "
+                "повторить лексику и отметить сегодняшний прогресс по профильной математике!"
+            )
         except Exception as e:
-            logging.error(f"Не удалось отправить сообщение пользователю {user_id}: {e}")
+            logging.error(f"Не удалось отправить уведомление {user_id}: {e}")
 
 
-# --- ГЛАВНАЯ ФУНКЦИЯ ЗАПУСКА (ВЕЧНАЯ БАТАРЕЙКА) ---
+# --- ГЛАВНЫЙ ЦИКЛ ЗАПУСКА ---
 async def main():
-    # Настраиваем расписание
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-    # Напоминание каждый день в 10:00 утра (можешь поменять время)
+    # Рассылка напоминаний каждый день ровно в 10:00 утра
     scheduler.add_job(send_daily_reminders, trigger='cron', hour=10, minute=0)
     scheduler.start()
 
-    # Запускаем бота, чтобы он бесконечно ждал сообщений
-    print("Бот успешно запущен и готов к работе!")
+    print("Робот-помощник успешно запущен!")
     await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
-    # Именно эта строчка запускает всё приложение и не дает ему отключиться
     asyncio.run(main())
